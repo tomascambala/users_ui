@@ -24,8 +24,11 @@ interface Account {
   password?: string;
 }
 
+interface AccountWithPassword extends Omit<Account, 'id'> {
+  password: string;
+}
 
-const Register: React.FC<RegisterProps> = (props: any) => {
+const Register: React.FC<RegisterProps> = (props) => {
   const navigate: NavigateFunction = useNavigate();
   const [successful, setSuccessful] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -85,7 +88,7 @@ const Register: React.FC<RegisterProps> = (props: any) => {
       .required("This field is required!")) : Yup.mixed()
   });
 
-  const HandleRegister = (formValue: Account) => {
+  const HandleRegister = (formValue: AccountWithPassword) => {
     const { email, password, firstName, lastName, phoneNumber, country, town, postalCode, streetName, houseNumber } = formValue;
 
     if (props?.account) {
@@ -167,7 +170,6 @@ const Register: React.FC<RegisterProps> = (props: any) => {
                 </div>
                 {
                   !props?.account &&
-
                   <div className="form-group">
                     <label htmlFor="password"> Password </label>
                     <Field
